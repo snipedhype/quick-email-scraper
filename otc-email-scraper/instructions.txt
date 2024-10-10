@@ -1,7 +1,7 @@
 Download Python here => https://www.python.org/downloads/
 Run Python installer
 Open the command prompt in the script folder
-Run 'pip install beautifulsoup4'
+Run 'pip install -r requirements.txt'
 Fill out config.txt with your imap info(leave host and port the same)
 Get email title from email(case sensitive) => put in config
 Get the text of the image the link is in => guide https://tinyurl.com/textfromlink => put in config
