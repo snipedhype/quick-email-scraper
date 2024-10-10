@@ -23,21 +23,21 @@ gmailConfig = { # config for imap
     'linkElementText': config['linkElementText']
 }
 
-def find_link_by_image_alt(body, linkElementText):
+def find_link(body, linkElementText):
     soup = BeautifulSoup(body, 'html.parser')
-    img_tag = soup.find('img', alt=linkElementText)
     
+    img_tag = soup.find('img', alt=linkElementText) # search by img text
     if img_tag:
         parent_a_tag = img_tag.find_parent('a')
         if parent_a_tag:
-            href = parent_a_tag.get('href')
-            return href
-        else:
-            tqdm.write(f"No parent <a> tag found for the image with alt text: {linkElementText}")
-            return None
-    else:
-        tqdm.write(f"No image found with alt text: {linkElementText}")
-        return None
+            return parent_a_tag.get('href')
+    
+    link_tag = soup.find('a', string=linkElementText) # search by text
+    if link_tag:
+        return link_tag.get('href')
+    
+    tqdm.write(f"No image or link found with alt/text: {linkElementText}") #this is bad
+    return None
 
 # Main function
 def process_mailbox(mail):
@@ -61,7 +61,7 @@ def process_mailbox(mail):
                         for part in email_message.walk():
                             if part.get_content_type() == 'text/html':
                                 body = part.get_payload(decode=True)
-                                link = find_link_by_image_alt(body, gmailConfig['linkElementText'])
+                                link = find_link(body, gmailConfig['linkElementText'])
                                 if link:
                                     with open(file_name, 'a') as file:
                                         file.write(link + '\n')
