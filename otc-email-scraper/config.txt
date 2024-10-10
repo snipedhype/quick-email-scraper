@@ -1,0 +1,6 @@
+user = email@gmail.com
+password = app_password
+host = imap.gmail.com
+port = 993
+emailTitle = email title 
+linkElementText = text fom link
